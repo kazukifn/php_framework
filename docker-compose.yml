@@ -1,0 +1,25 @@
+version: '3.9'
+services:
+    web:
+        build: .
+        container_name: "php_framework"
+        volumes:
+            - "./main/:/var/www/html"
+        privileged: true
+        ports:
+            - "80:80"
+        depends_on:
+            - mysql
+    mysql:
+        image: mysql:8
+        volumes:
+            - ./mysql:/var/lib/mysql
+            - ./config/db/my.cnf:/etc/mysql/conf.d/my.cnf
+        environment:
+            - MYSQL_ROOT_PASSWORD=password
+            - MYSQL_DATABASE=test
+            - MYSQL_USER=docker
+            - MYSQL_PASSWORD=password
+        ports:
+            - "4306:3306"
+        container_name: php_framework_mysql
